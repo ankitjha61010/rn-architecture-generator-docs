@@ -1,0 +1,68 @@
+/**
+ * Released versions, newest first. The first entry is "latest" – it drives the version shown in the header.
+ * Releasing: bump package.json, add an entry here (and in CHANGELOG.md), redeploy the site.
+ */
+export interface Release {
+  version: string;
+  /** Publish date on npm (YYYY-MM-DD). */
+  date: string;
+  summary: string;
+  groups: Array<{ title: string; items: string[] }>;
+}
+
+export const releases: Release[] = [
+  {
+    version: '1.0.1',
+    date: '2026-10-06',
+    summary: 'Fixes for Docker ports, notifications, RTL icons and the keyboard; persistent OTA releases; chat and calling improvements.',
+    groups: [
+      {
+        title: 'Backend',
+        items: [
+          '**Docker on free ports:** `npm run docker:up` starts the database / Redis on the next free host port when the default one is taken (another project, a local Postgres…) and updates `DATABASE_URL` / `REDIS_URL` in `.env`. Compose ports come from `DB_PORT`, `REDIS_PORT`, `API_PORT` (microservices: `GATEWAY_PORT`).',
+          '**OTA releases are stored in the database** for Prisma, TypeORM and Mongoose (own migrations / models) – no longer in memory.',
+          'Chat: richer message validation (DTOs / schemas), file storage fixes, more unit and e2e tests.',
+        ],
+      },
+      {
+        title: 'Mobile app',
+        items: [
+          '**Notifications:** the *Enable notifications* button asks again after a refusal – or, when the system no longer shows the dialog, explains it and opens the app Settings.',
+          '**RTL:** directional icons (arrows, chevrons, send, reply, logout…) are mirrored automatically by `AppIcon`.',
+          '**Keyboard:** `AppScreen` keeps the focused input above the keyboard on iOS and Android (edge to edge) – login, register, forgot / reset password, OTP, change password, edit profile…',
+          'Chat: spreadsheet (.xlsx) preview, message sheets, keyboard-aware input bar, socket reconnect fixes.',
+          'Calling: Android "Phone" and "Display over other apps" permissions asked at runtime (Android 11+), minimised call bar and video call fixes, iOS Simulator fallback.',
+          '`IMAGE_BASE_URL` for uploaded files (CDN / file server).',
+        ],
+      },
+      {
+        title: 'Admin panel',
+        items: ['Reworked **OTA Releases** page (publish from `release.json`, rollout, rollback) and user management fixes – React and Next.js.'],
+      },
+      {
+        title: 'Docs',
+        items: ['New documentation website with search, dark mode and this changelog.'],
+      },
+    ],
+  },
+  {
+    version: '1.0.0',
+    date: '2026-10-04',
+    summary: 'First public release.',
+    groups: [
+      {
+        title: 'Highlights',
+        items: [
+          'Interactive wizard: **Frontend**, **Backend** or **Frontend + Backend**.',
+          'React Native 0.87 app in 8 architectures – auth (email, OTP, Google, Facebook, Apple), chat & groups, Agora audio / video calling, FCM notifications, payments (IAP, Adapty, Stripe, Razorpay, PayPal), i18n / RTL, theme, OTA.',
+          'NestJS / Express backend in 6 architectures – PostgreSQL / MySQL / MongoDB with Prisma, TypeORM or Mongoose, monolith or microservices, Swagger, security middleware, tests, Docker.',
+          'Admin panel in React + Vite or Next.js.',
+        ],
+      },
+    ],
+  },
+];
+
+export const latest = releases[0];
+
+export const versionAnchor = (version: string) => `v${version.replace(/\./g, '-')}`;
