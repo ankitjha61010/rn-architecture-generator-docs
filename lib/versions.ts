@@ -14,7 +14,7 @@ export const releases: Release[] = [
   {
     version: '1.0.1',
     date: '2026-10-06',
-    summary: 'Fixes for Docker ports, notifications, RTL icons and the keyboard; persistent OTA releases; chat and calling improvements.',
+    summary: 'App icon & full-screen native splash from your images; fixes for Docker ports, notifications, RTL icons and the keyboard; persistent OTA releases.',
     groups: [
       {
         title: 'Backend',
@@ -27,6 +27,8 @@ export const releases: Release[] = [
       {
         title: 'Mobile app',
         items: [
+          '**App icon:** give a square image (`--app-icon` or the wizard) → every Android icon (legacy, round, adaptive, all densities) and the full iOS AppIcon set, incl. the 1024 App Store icon. See [App Icon & Splash](branding).',
+          '**Native splash screen:** give a portrait image (`--splash-image`) → full screen from the first frame on Android (incl. Android 12+) and iOS, continued by the JS splash with the same image.',
           '**Notifications:** the *Enable notifications* button asks again after a refusal – or, when the system no longer shows the dialog, explains it and opens the app Settings.',
           '**RTL:** directional icons (arrows, chevrons, send, reply, logout…) are mirrored automatically by `AppIcon`.',
           '**Keyboard:** `AppScreen` keeps the focused input above the keyboard on iOS and Android (edge to edge) – login, register, forgot / reset password, OTP, change password, edit profile…',

@@ -44,6 +44,7 @@ export const sections: DocSection[] = [
     pages: [
       { slug: 'react-native-app', title: 'React Native App', icon: 'phone', description: 'Everything the mobile app template contains: navigation, auth, chat, calling, i18n, RTL, theme…', keywords: 'mobile frontend android ios screens' },
       { slug: 'backend', title: 'Backend (NestJS / Express)', label: 'Backend (NestJS/Express)', icon: 'server', description: 'The generated API: frameworks, architectures, modules, routes, security and tests.', keywords: 'api nestjs express server routes' },
+      { slug: 'branding', title: 'App Icon & Splash Screen', label: 'App Icon & Splash', icon: 'phone', description: 'Give your images – get every Android / iOS app icon and a full-screen native splash screen.', keywords: 'icon launcher adaptive appicon splash launch screen storyboard image logo brand' },
       { slug: 'admin-panel', title: 'Admin Panel (React + Next.js)', label: 'Admin Panel (React + Next.js)', icon: 'grid', description: 'The web admin panel: dashboard, users, broadcasts, legal pages, payments and OTA releases.', keywords: 'admin dashboard vite tailwind next' },
     ],
   },
@@ -101,7 +102,7 @@ export const docHref = (slug: string) => `/docs/${slug}/`;
 export const topNav = [
   { label: 'Home', href: '/' },
   { label: 'Getting Started', href: docHref('introduction'), match: ['introduction', 'installation', 'quick-start'] },
-  { label: 'Templates', href: docHref('react-native-app'), match: ['react-native-app', 'backend', 'admin-panel', 'architectures', 'monolith', 'microservices'] },
+  { label: 'Templates', href: docHref('react-native-app'), match: ['react-native-app', 'branding', 'backend', 'admin-panel', 'architectures', 'monolith', 'microservices'] },
   { label: 'Guides', href: docHref('authentication'), match: ['authentication', 'database', 'payments', 'realtime', 'notifications', 'swagger', 'docker', 'ota', 'configuration'] },
   { label: 'CLI Reference', href: docHref('cli-reference'), match: ['cli-reference', 'troubleshooting', 'changelog'] },
   { label: 'Examples', href: docHref('examples'), match: ['examples', 'contributing'] },

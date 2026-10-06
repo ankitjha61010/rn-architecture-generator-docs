@@ -22,6 +22,7 @@ export function ReactNativeApp() {
           ['**Calling**', '**Audio and video**, one-to-one and **group**, via **Agora** · iOS **CallKit + PushKit** · Android native full-screen incoming call · call history · draggable minimised call'],
           ['**Notifications**', 'Firebase Cloud Messaging + Notifee, inbox with unread badge, deep links, optional Firebase Analytics'],
           ['**Payments**', 'In-app purchases (**react-native-iap** or **Adapty**) and/or **Stripe**, **Razorpay**, **PayPal**'],
+          ['**App icon & splash**', 'Your square image → every Android / iOS icon; your portrait image → full-screen native splash – see [App Icon & Splash](branding)'],
           ['**More**', 'i18n (English, Hindi + Arabic with RTL), light / dark theme, AES API encryption, OTA updates, Terms & Privacy links, permissions, flash messages, custom fonts & vector icons'],
         ]}
       />
@@ -70,6 +71,82 @@ export function ReactNativeApp() {
       <P>
         AndroidManifest permissions and services, Gradle plugins (Google Services), Info.plist usage descriptions and URL schemes, Podfile permission
         handlers, AppDelegate, entitlements (push, Sign in with Apple) and the Xcode project – patched only for the features you selected.
+      </P>
+    </>
+  );
+}
+
+export function Branding() {
+  return (
+    <>
+      <P>
+        Give the wizard two images and the generated app ships with **your app icon** and a **full-screen native splash screen** on Android and iOS –
+        no Android Studio, Xcode or icon website needed. Both are optional; leave the questions empty to keep React Native&apos;s defaults.
+      </P>
+
+      <H2>1. Prepare the images</H2>
+      <Table
+        head={['Image', 'Requirements', 'Tips']}
+        rows={[
+          ['**App icon**', 'Square PNG / JPG / WebP, at least 512×512 – **1024×1024** recommended', 'Fill the whole square (no own rounded corners or padding) – Android and iOS cut the shape themselves. Transparency becomes the icon\'s background colour on iOS (the App Store rejects transparent icons).'],
+          ['**Splash image**', 'Portrait PNG / JPG / WebP – **1290×2796** (or 1242×2688 / 1080×2400) recommended', 'Full-screen artwork. Keep the logo and text in the middle ~80 % – screen shapes differ, so the edges can be stretched (Android) or cropped (iOS) a little.'],
+        ]}
+      />
+
+      <H2>2. Give them to the generator</H2>
+      <P>In the wizard, right after the project location:</P>
+      <Code
+        lang="text"
+        title="wizard"
+        code={`? App icon – path to a square PNG/JPG (1024×1024 recommended, leave empty for the default icon): ./brand/icon.png
+? Splash screen – path to a full-screen portrait image (e.g. 1290×2796, leave empty for none): ./brand/splash.png
+? Splash background colour (around the image on other screen shapes + Android 12 start screen): #0B1020`}
+      />
+      <P>The background colour is suggested from the image (its dominant colour) – press Enter to accept it. Without questions (CI):</P>
+      <Code
+        code={`npx rn-architecture-generator --type frontend --yes --name MyApp \\
+  --app-icon ./brand/icon.png \\
+  --splash-image ./brand/splash.png --splash-background "#0B1020"`}
+      />
+      <Callout type="tip">The images are checked before anything is generated: a non-square or too small icon, or a file that isn&apos;t an image, is rejected with a clear message; small or landscape splash images only print a warning.</Callout>
+
+      <H2>3. What gets generated</H2>
+      <H3>App icon</H3>
+      <Table
+        head={['Platform', 'Files']}
+        rows={[
+          ['Android', '`mipmap-{mdpi…xxxhdpi}/ic_launcher.png` (48–192 px), `ic_launcher_round.png` (circle), **adaptive icon** for Android 8+ (`mipmap-anydpi-v26/ic_launcher.xml` + `ic_launcher_foreground.png` + background colour)'],
+          ['iOS', '`Images.xcassets/AppIcon.appiconset` – every iPhone size (40–180 px) + the **1024×1024 App Store** icon, flattened without transparency'],
+        ]}
+      />
+      <H3>Splash screen</H3>
+      <Table
+        head={['Platform', 'How it is shown']}
+        rows={[
+          ['Android', 'The image is the app window\'s background (`drawable/splash_screen.xml` on `AppTheme`) – visible from the first frame until React Native has drawn. **Android 12+** always shows a system start screen first; it is set to your splash colour without an icon (`values-v31/styles.xml`), so it blends straight into the image.'],
+          ['iOS', '`LaunchScreen.storyboard` with a full-screen image view (aspect fill) + `SplashImage` / `SplashBackground` in `Images.xcassets`'],
+          ['JS', 'The `SplashScreen` (shown while the session is restored) displays the **same image** the same way, plus a small loader – the switch from native to React Native is invisible'],
+        ]}
+      />
+      <Code
+        lang="text"
+        title="timeline"
+        code={`tap icon ─► [Android 12+: splash colour] ─► native full-screen image ─► JS SplashScreen (same image + loader) ─► Login / Home`}
+      />
+
+      <H2>4. Test it</H2>
+      <List
+        items={[
+          'Run the app (`npx react-native run-android` / `run-ios`) and **close it completely** before opening it again – a warm start skips the splash.',
+          '**iOS caches launch screens:** after changing the splash, delete the app from the simulator / phone (and restart the simulator) – otherwise the old one keeps showing.',
+          'Android launchers cache icons too – uninstall the old build if you still see the React Native icon.',
+          'The splash is easiest to judge in a **release** build – debug builds show Metro\'s loading banner on top.',
+        ]}
+      />
+
+      <H2>Change them later</H2>
+      <P>
+        {'Every generated app documents its icon and splash files in its README (*App icon & splash screen*). The quickest way: generate a scratch project with the new images (`--app-icon` / `--splash-image`, plus `--no-install --no-pods`) and copy `android/app/src/main/res/mipmap-*`, `res/drawable*`, the `values*/` splash files, `ios/<App>/Images.xcassets`, `LaunchScreen.storyboard` and `splash.png` over.'}
       </P>
     </>
   );

@@ -3,7 +3,7 @@ import { Architectures, Microservices, Monolith } from './architecture';
 import { Installation, Introduction, QuickStart } from './gettingStarted';
 import { Authentication, Configuration, Database, Docker, Notifications, Ota, Payments, Realtime, Swagger } from './guides';
 import { Changelog, CliReference, Contributing, Examples, Troubleshooting } from './reference';
-import { AdminPanel, Backend, ReactNativeApp } from './templates';
+import { AdminPanel, Backend, Branding, ReactNativeApp } from './templates';
 
 /** Page body per slug – titles, descriptions and order live in lib/site.ts. */
 export const content: Record<string, ComponentType> = {
@@ -11,6 +11,7 @@ export const content: Record<string, ComponentType> = {
   installation: Installation,
   'quick-start': QuickStart,
   'react-native-app': ReactNativeApp,
+  branding: Branding,
   backend: Backend,
   'admin-panel': AdminPanel,
   architectures: Architectures,

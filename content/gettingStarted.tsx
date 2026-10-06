@@ -214,7 +214,7 @@ npm run admin     # admin panel – http://localhost:5173`}
       <Table
         head={['Mode', 'Questions (in order)']}
         rows={[
-          ['**Frontend**', 'app name → package name (also the iOS bundle id) → location → architecture → state management → storage → API encryption → RTL → theme → vector icons → email auth → mobile OTP → Google / Facebook / Apple login → chat → group chat → audio calls → video calls → Socket.io → push notifications → Firebase files → analytics → terms → delete account → Google Location → drawer → OTA → in-app purchases → payment gateway → admin panel → install / pods / git'],
+          ['**Frontend**', 'app name → package name (also the iOS bundle id) → location → app icon image → splash image (+ background colour) → architecture → state management → storage → API encryption → RTL → theme → vector icons → email auth → mobile OTP → Google / Facebook / Apple login → chat → group chat → audio calls → video calls → Socket.io → push notifications → Firebase files → analytics → terms → delete account → Google Location → drawer → OTA → in-app purchases → payment gateway → admin panel → install / pods / git'],
           ['**Backend**', 'name → location → framework → architecture → authentication & sign-in methods → password hashing → database → ORM → modules → deployment → Redis → Docker → security → encryption → Swagger → Firebase service account & Agora keys → summary (*Yes* · *Go back and modify* · *Cancel*)'],
           ['**Frontend + Backend**', 'The app questions, then only the backend questions the app doesn\'t already answer'],
         ]}
