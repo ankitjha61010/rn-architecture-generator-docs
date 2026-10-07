@@ -12,17 +12,49 @@ export interface Release {
 
 export const releases: Release[] = [
   {
+    version: '1.0.3',
+    date: '2026-10-07',
+    summary: 'Short `icon` / `splash` commands that change an existing app in place, a git check (commit first) before `icon` / `splash` / `rename`, and no more new projects created inside an existing app.',
+    groups: [
+      {
+        title: 'Change an existing project',
+        items: [
+          '**`icon` command:** inside the project, `npx rn-architecture-generator icon ./icon.png` replaces the app icon (Android legacy / round / adaptive, every iOS size) – nothing else is touched. See [Change them later](/docs/branding/#change-them-later).',
+          '**`splash` command:** `npx rn-architecture-generator splash ./splash.png` replaces the native splash (Android + iOS) and the JS splash; `--background "#0B1020"` sets the colour, `--logo-width` / `--logo-height` show the image as a centred logo.',
+          '**Works where you are:** `icon`, `splash` and `rename` use the current folder – or `--directory <path>`; in a full-stack project the root or `mobile/` both work.',
+          '**Fixed: a new project was generated instead of updating the app.** `--type frontend --yes --name MyApp --app-icon …` run *inside* `MyApp` looked for `MyApp/MyApp` and created a new project there. It now finds the app you are in and updates it in place.',
+          '**No project inside a project:** running the generator inside an existing app to create a new one now stops with an error that points to `icon` / `splash` / `rename` or `--directory`.',
+        ],
+      },
+      {
+        title: 'Git check',
+        items: [
+          '**Commit first:** `icon`, `splash`, `rename` and the wizard\'s *Update the app icon / splash screen only* stop with an error when the project is not in git or has uncommitted changes, and list the files plus the command to run. Pushing is not required.',
+          'A project inside a folder another repository ignores (e.g. `output/myapp`) counts as not committed – give it its own repository first.',
+          'The new image itself may be an uncommitted file inside the project.',
+          '**`--allow-dirty`** skips the check (on `icon`, `splash`, `rename` and the generator).',
+          'After a change the CLI points to `git diff` to review it and `git checkout . && git clean -fd` to undo it.',
+        ],
+      },
+      {
+        title: 'Docs & help',
+        items: [
+          '`--list`, `--help`, `icon --help`, `splash --help` and `rename --help` show the new commands and options.',
+          'Updated pages: [All Commands](commands), [CLI Reference](cli-reference) (new *icon · splash* section), [App Icon & Splash](/docs/branding/#change-them-later), [Rename a Project](rename), [Troubleshooting](troubleshooting).',
+        ],
+      },
+    ],
+  },
+  {
     version: '1.0.2',
     date: '2026-10-07',
-    summary: '← Back in every wizard question, `icon` / `splash` / `rename` commands for existing projects (git must be clean and pushed), splash logo size, `--list`; Android shows only the native splash.',
+    summary: '← Back in every wizard question, update the icon / splash of an existing project, splash logo size, `rename` command, `--list`; Android shows only the native splash.',
     groups: [
       {
         title: 'CLI',
         items: [
           '**← Back in every question** (frontend, backend, full-stack): pick *← Back* (or type `<` in a text question) to change the previous answer.',
-          '**`icon` / `splash` commands:** inside an existing project, `icon ./icon.png` or `splash ./splash.png` replaces only the branding files – no new project is created. The old `--app-icon` / `--splash-image` form now also updates the app in place when run inside it. See [Change them later](/docs/branding/#change-them-later).',
-          '**Commit and push first:** `icon`, `splash` and `rename` stop with an error when the project has uncommitted changes, unpushed commits or no remote branch (`--allow-dirty` skips the check) – every change can be reviewed with `git diff`.',
-          '**No project inside a project:** running the generator inside an existing app stops with an error instead of creating a second app in it.',
+          '**Update the icon / splash of an existing project:** run the generator on it with `--app-icon` / `--splash-image` (or pick *Update the app icon / splash screen only* in the wizard) – only the branding files are replaced. Since 1.0.3 the shorter `icon` / `splash` commands do this.',
           '**Splash logo size:** `--splash-logo-width` / `--splash-logo-height` show the splash image as a centred logo instead of full screen.',
           '**`rename` command:** rename a generated project everywhere – folder, Android, iOS, code and texts. See [Rename a Project](rename).',
           '**`--list`:** every command and what it does. See [All Commands](commands).',

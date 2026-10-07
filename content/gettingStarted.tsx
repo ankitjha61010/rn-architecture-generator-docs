@@ -108,9 +108,9 @@ npx rn-architecture-generator --dry-run`}
       <H2>Pick a version</H2>
       <P>{'`npx rn-architecture-generator` always runs the newest release. To use or pin a specific one, add `@<version>` – every release and what changed is in the [Changelog](changelog).'}</P>
       <Code
-        code={`npx rn-architecture-generator@1.0.2
-npm install -g rn-architecture-generator@1.0.2
-yarn global add rn-architecture-generator@1.0.2`}
+        code={`npx rn-architecture-generator@1.0.3
+npm install -g rn-architecture-generator@1.0.3
+yarn global add rn-architecture-generator@1.0.3`}
       />
 
       <H2>Requirements</H2>

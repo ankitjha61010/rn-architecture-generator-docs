@@ -28,6 +28,7 @@ npx rn-architecture-generator icon --help     # icon / splash / rename options`}
           ['`--dry-run`', 'show what would be generated, write nothing'],
           ['`-y, --yes`', 'non-interactive, defaults for everything not passed'],
           ['`-f, --force`', 'replace the target folder if it exists'],
+          ['`--allow-dirty`', 'update the icon / splash of an existing app even with uncommitted git changes (not recommended)'],
           ['`--no-install` · `--no-pods` · `--no-git`', 'skip `npm install` · `pod install` (macOS) · git init'],
           ['`--list`', 'every command and what it does'],
           ['`-v, --version`', 'print the version'],
@@ -81,7 +82,7 @@ npx rn-architecture-generator icon --help     # icon / splash / rename options`}
         ]}
       />
       <H2>icon · splash</H2>
-      <P>Change an existing app in place – run inside it (or pass `--directory`). The project must be committed and pushed first.</P>
+      <P>Change an existing app in place – run inside it (or pass `--directory`). The project must be committed first (pushing is not required).</P>
       <Table
         head={['Argument / flag', 'Values / meaning']}
         rows={[
@@ -90,7 +91,7 @@ npx rn-architecture-generator icon --help     # icon / splash / rename options`}
           ['`-b, --background <hex>`', '`splash` only: colour around the image + Android 12+ start screen (default: the image\'s dominant colour)'],
           ['`-w, --logo-width <dp>` · `-h, --logo-height <dp>`', '`splash` only: show the image as a centred logo of this size – default: full screen'],
           ['`-d, --directory <path>`', 'the project, or a full-stack folder with `mobile/` (default `.`)'],
-          ['`--allow-dirty`', 'skip the git check (uncommitted / unpushed changes) – not recommended'],
+          ['`--allow-dirty`', 'skip the git check (uncommitted changes) – not recommended'],
         ]}
       />
 
@@ -103,7 +104,7 @@ npx rn-architecture-generator icon --help     # icon / splash / rename options`}
           ['`--display-name <name>`', 'name under the app icon (default: the new name split into words – `HeApp` → *He App*)'],
           ['`-p, --package <id>`', 'also change the Android package / iOS bundle id (default: keep it)'],
           ['`--dry-run` · `-y, --yes`', 'show the plan only · no questions, no confirmation'],
-          ['`--allow-dirty`', 'skip the git check (uncommitted / unpushed changes) – not recommended'],
+          ['`--allow-dirty`', 'skip the git check (uncommitted changes) – not recommended'],
         ]}
       />
       <Callout type="tip">Not sure? Run with `--dry-run` first – it prints the files, folders and dependencies without writing anything.</Callout>
@@ -140,7 +141,7 @@ export function Commands() {
           ['`… rename HeApp --package com.example.heapp`', 'Rename and also change the Android package / iOS bundle id'],
         ]}
       />
-      <Callout type="warning">**Commit and push first.** These commands stop with an error when the project has uncommitted changes, unpushed commits or no remote branch – so every change they make shows up in `git diff` and can be undone with `git checkout . && git clean -fd`. `--allow-dirty` skips the check.</Callout>
+      <Callout type="warning">**Commit first.** These commands stop with an error when the project has uncommitted changes or is not in a git repository (pushing is not required) – so every change they make shows up in `git diff` and can be undone with `git checkout . && git clean -fd`. `--allow-dirty` skips the check.</Callout>
 
       <H2>Help</H2>
       <Table
@@ -162,13 +163,13 @@ export function RenameProject() {
       <P>Created `myapp` and now it should be called `heapp`? One command renames the generated project everywhere – folder, Android, iOS, code and texts.</P>
       <Code
         code={`cd myapp
-git status                                   # must be clean and pushed
+git status                                   # must be clean (everything committed)
 npx rn-architecture-generator rename heapp
 
 # with a display name and a new package / bundle id, from outside the project
 npx rn-architecture-generator rename HeApp --directory ./myapp --display-name "He App" --package com.example.heapp`}
       />
-      <Callout type="warning">The project must be committed and pushed first – otherwise `rename` stops with the files that are not committed (or the commits that are not pushed). Review the rename with `git diff`. `--allow-dirty` skips the check.</Callout>
+      <Callout type="warning">The project must be committed first – otherwise `rename` stops with the files that are not committed. Pushing is not required. Review the rename with `git diff`. `--allow-dirty` skips the check.</Callout>
       <P>Interactive, it shows the plan (old → new) and asks before changing anything; `--yes` skips the questions, `--dry-run` only shows the plan.</P>
 
       <H2>What is renamed</H2>
@@ -218,7 +219,7 @@ export function Troubleshooting() {
           ['`npx` / network errors during init', 'Check your connection / proxy – the React Native CLI is downloaded on every run'],
           ['`… already exists and is not empty`', 'Pick another `--name` / `--directory`, answer *Yes* to the overwrite question, or pass `--force`. To change only the icon / splash of that app, run `icon` / `splash` inside it'],
           ['`… is already a React Native project – a new project would be created inside it`', 'You ran the generator inside an app. To change it, use `icon <image>` / `splash <image>` / `rename <name>`; to create a new app, `cd ..` or pass `--directory`'],
-          ['`uncommitted changes` / `not pushed` / `not a git repository`', '`icon`, `splash` and `rename` only change a committed and pushed project: `git add -A && git commit -m "…" && git push`, then run again (`--allow-dirty` skips the check)'],
+          ['`uncommitted changes` / `not a git repository`', '`icon`, `splash` and `rename` only change a committed project: `git add -A && git commit -m "…"`, then run again (`--allow-dirty` skips the check)'],
           ['Picked a wrong answer in the wizard', 'Choose **← Back** (or type `<` in a text question) – the previous question comes back with your answer pre-selected'],
           ['Android shows the logo again after the splash', 'Fixed in newer versions – update an existing app with `splash <image>` ([Change them later](/docs/branding/#change-them-later)); its JS splash becomes transparent so only the native splash is seen'],
           ['Old name still shows under the icon after `rename`', 'Uninstall the old build – launchers cache the name; run `pod install` and `npm start -- --reset-cache`'],

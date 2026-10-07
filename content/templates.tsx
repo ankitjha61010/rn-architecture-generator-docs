@@ -161,7 +161,7 @@ iOS:     tap icon ─► launch screen ─► JS SplashScreen (same image, 5 s) 
       <P>Go into the project and run `icon` or `splash`. Only the branding is replaced – your code is not touched and no new project is created.</P>
       <Code
         code={`cd MyApp
-git status                    # commit and push first – the command checks it
+git status                    # commit first – the command checks it
 
 npx rn-architecture-generator icon ./brand/new-icon.png
 npx rn-architecture-generator splash ./brand/new-splash.png --background "#0B1020"
@@ -170,7 +170,7 @@ npx rn-architecture-generator splash ./brand/logo.png --logo-width 200     # cen
 git diff                      # review, then commit`}
       />
       <P>From outside the project, add `--directory ./MyApp`; in a full-stack project, run it in the root or in `mobile/`.</P>
-      <Callout type="warning">**Commit and push first.** The command stops with an error when the project has uncommitted changes, unpushed commits or no remote branch, and lists what to do. That way every change shows up in `git diff` and can be undone with `git checkout . && git clean -fd`. The new image itself may be an untracked file in the project. `--allow-dirty` skips the check.</Callout>
+      <Callout type="warning">**Commit first.** The command stops with an error when the project has uncommitted changes or is not in a git repository, and lists what to do. Pushing is not required. That way every change shows up in `git diff` and can be undone with `git checkout . && git clean -fd`. The new image itself may be an untracked file in the project. `--allow-dirty` skips the check.</Callout>
       <P>The old form (`--type frontend --yes --name MyApp --app-icon …`) still works and also updates the app in place – including when run inside it. In the wizard, pointing it at an existing app asks *Update the app icon / splash screen only* or *Delete it and create a new project*.</P>
       <Table
         head={['Updated', 'Files']}

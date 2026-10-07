@@ -77,7 +77,7 @@ export const sections: DocSection[] = [
       { slug: 'commands', title: 'All Commands', icon: 'terminal', description: 'Every command and what it does – create, update the icon / splash, rename, help (also: --list).', keywords: 'commands list --list overview what does help usage' },
       { slug: 'rename', title: 'Rename a Project', icon: 'refresh', description: 'Rename a generated app later – folder, Android, iOS, code and texts in one command.', keywords: 'rename name change project folder package bundle id display name xcodeproj' },
       { slug: 'troubleshooting', title: 'Troubleshooting', icon: 'help', description: 'Common problems and their fixes.', keywords: 'error problem fix issue' },
-      { slug: 'changelog', title: 'Changelog', icon: 'refresh', description: 'What changed in every version – and how to install a specific one.', keywords: 'version release changelog 1.0.2 1.0.1 1.0.0 history upgrade' },
+      { slug: 'changelog', title: 'Changelog', icon: 'refresh', description: 'What changed in every version – and how to install a specific one.', keywords: 'version release changelog 1.0.3 1.0.2 1.0.1 1.0.0 history upgrade' },
     ],
   },
   {
