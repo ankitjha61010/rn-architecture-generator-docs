@@ -222,7 +222,7 @@ npm run admin     # admin panel – http://localhost:5173`}
       <Callout type="tip" title="Picked a wrong answer?">
         {'Every question has **← Back** at the bottom of the list (in text questions type `<`). The previous question comes back with your answer pre-selected – everything before it is kept.'}
       </Callout>
-      <P>Pointing the wizard at a folder that already holds a generated app offers *Update the app icon / splash screen only* – see [App Icon & Splash](branding). To rename an app later, see [Rename a Project](rename).</P>
+      <P>Pointing the wizard at a folder that already holds a generated app offers *Update the app icon / splash screen only*. To change a generated app later, run `icon`, `splash` or `rename` inside it – see [Change them later](/docs/branding/#change-them-later) and [Rename a Project](rename).</P>
       <Callout title="Rules applied automatically">
         Chat or calling turns on Socket.io and vector icons · group chat needs chat · the Redux architecture uses Redux Toolkit · microservices need authentication and always use Redis.
       </Callout>

@@ -14,13 +14,15 @@ export const releases: Release[] = [
   {
     version: '1.0.2',
     date: '2026-10-07',
-    summary: '← Back in every wizard question, update the icon / splash of an existing project, splash logo size, `rename` command, `--list`; Android shows only the native splash.',
+    summary: '← Back in every wizard question, `icon` / `splash` / `rename` commands for existing projects (git must be clean and pushed), splash logo size, `--list`; Android shows only the native splash.',
     groups: [
       {
         title: 'CLI',
         items: [
           '**← Back in every question** (frontend, backend, full-stack): pick *← Back* (or type `<` in a text question) to change the previous answer.',
-          '**Update the icon / splash of an existing project:** run the generator on it with `--app-icon` / `--splash-image` (or pick *Update the app icon / splash screen only* in the wizard) – only the branding files are replaced. See [App Icon & Splash](branding).',
+          '**`icon` / `splash` commands:** inside an existing project, `icon ./icon.png` or `splash ./splash.png` replaces only the branding files – no new project is created. The old `--app-icon` / `--splash-image` form now also updates the app in place when run inside it. See [Change them later](/docs/branding/#change-them-later).',
+          '**Commit and push first:** `icon`, `splash` and `rename` stop with an error when the project has uncommitted changes, unpushed commits or no remote branch (`--allow-dirty` skips the check) – every change can be reviewed with `git diff`.',
+          '**No project inside a project:** running the generator inside an existing app stops with an error instead of creating a second app in it.',
           '**Splash logo size:** `--splash-logo-width` / `--splash-logo-height` show the splash image as a centred logo instead of full screen.',
           '**`rename` command:** rename a generated project everywhere – folder, Android, iOS, code and texts. See [Rename a Project](rename).',
           '**`--list`:** every command and what it does. See [All Commands](commands).',
