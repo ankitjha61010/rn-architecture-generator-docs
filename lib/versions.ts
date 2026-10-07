@@ -12,6 +12,30 @@ export interface Release {
 
 export const releases: Release[] = [
   {
+    version: '1.0.2',
+    date: '2026-10-07',
+    summary: '← Back in every wizard question, update the icon / splash of an existing project, splash logo size, `rename` command, `--list`; Android shows only the native splash.',
+    groups: [
+      {
+        title: 'CLI',
+        items: [
+          '**← Back in every question** (frontend, backend, full-stack): pick *← Back* (or type `<` in a text question) to change the previous answer.',
+          '**Update the icon / splash of an existing project:** run the generator on it with `--app-icon` / `--splash-image` (or pick *Update the app icon / splash screen only* in the wizard) – only the branding files are replaced. See [App Icon & Splash](branding).',
+          '**Splash logo size:** `--splash-logo-width` / `--splash-logo-height` show the splash image as a centred logo instead of full screen.',
+          '**`rename` command:** rename a generated project everywhere – folder, Android, iOS, code and texts. See [Rename a Project](rename).',
+          '**`--list`:** every command and what it does. See [All Commands](commands).',
+        ],
+      },
+      {
+        title: 'Mobile app',
+        items: [
+          '**Android: only the native splash is seen** – the JS splash is transparent there, so the logo no longer appears a second time.',
+          'The splash stays up **5 seconds** (`appConfig.splashDelayMs`, was 1.2 s); image, colour and logo size live in `assets/images/splash.ts`.',
+        ],
+      },
+    ],
+  },
+  {
     version: '1.0.1',
     date: '2026-10-06',
     summary: 'App icon & full-screen native splash from your images; fixes for Docker ports, notifications, RTL icons and the keyboard; persistent OTA releases.',
@@ -64,6 +88,9 @@ export const releases: Release[] = [
     ],
   },
 ];
+
+/** Changes on the main branch that are not on npm yet – shown on the Changelog page as "Upcoming". Move into a release when publishing. */
+export const upcoming: Release['groups'] = [];
 
 export const latest = releases[0];
 

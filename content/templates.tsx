@@ -80,8 +80,9 @@ export function Branding() {
   return (
     <>
       <P>
-        Give the wizard two images and the generated app ships with **your app icon** and a **full-screen native splash screen** on Android and iOS –
-        no Android Studio, Xcode or icon website needed. Both are optional; leave the questions empty to keep React Native&apos;s defaults.
+        Give the wizard two images and the generated app ships with **your app icon** and a **native splash screen** on Android and iOS – full screen or
+        as a centred logo – no Android Studio, Xcode or icon website needed. Both are optional; leave the questions empty to keep React Native&apos;s defaults.
+        Changing them later is one command – see [Change them later](#change-them-later).
       </P>
 
       <H2>1. Prepare the images</H2>
@@ -90,6 +91,7 @@ export function Branding() {
         rows={[
           ['**App icon**', 'Square PNG / JPG / WebP, at least 512×512 – **1024×1024** recommended', 'Fill the whole square (no own rounded corners or padding) – Android and iOS cut the shape themselves. Transparency becomes the icon\'s background colour on iOS (the App Store rejects transparent icons).'],
           ['**Splash image**', 'Portrait PNG / JPG / WebP – **1290×2796** (or 1242×2688 / 1080×2400) recommended', 'Full-screen artwork. Keep the logo and text in the middle ~80 % – screen shapes differ, so the edges can be stretched (Android) or cropped (iOS) a little.'],
+          ['**…or a logo**', 'Any PNG / WebP (transparent is fine), at least 4× the size you show it at', 'Shown at a fixed size (dp) in the middle of the splash colour – see [Logo instead of full screen](#logo-instead-of-full-screen).'],
         ]}
       />
 
@@ -100,7 +102,8 @@ export function Branding() {
         title="wizard"
         code={`? App icon – path to a square PNG/JPG (1024×1024 recommended, leave empty for the default icon): ./brand/icon.png
 ? Splash screen – path to a full-screen portrait image (e.g. 1290×2796, leave empty for none): ./brand/splash.png
-? Splash background colour (around the image on other screen shapes + Android 12 start screen): #0B1020`}
+? Splash background colour (around the image on other screen shapes + Android 12 start screen): #0B1020
+? How should the splash image be shown? Full screen`}
       />
       <P>The background colour is suggested from the image (its dominant colour) – press Enter to accept it. Without questions (CI):</P>
       <Code
@@ -109,6 +112,15 @@ export function Branding() {
   --splash-image ./brand/splash.png --splash-background "#0B1020"`}
       />
       <Callout type="tip">The images are checked before anything is generated: a non-square or too small icon, or a file that isn&apos;t an image, is rejected with a clear message; small or landscape splash images only print a warning.</Callout>
+
+      <H2 id="logo-instead-of-full-screen">Logo instead of full screen</H2>
+      <P>Pass a width and / or height in dp (or pick *Centred logo* in the wizard) and the image is drawn at that size, centred on the splash background – identically on Android, iOS and in the JS splash. Give one side and the other follows the image; give both and the image is fitted inside the box, never stretched.</P>
+      <Code
+        code={`npx rn-architecture-generator --type frontend --yes --name MyApp \\
+  --splash-image ./brand/logo.png --splash-background "#0B1020" \\
+  --splash-logo-width 200            # and / or --splash-logo-height 100`}
+      />
+      <P>Without a size the image fills the screen, as before.</P>
 
       <H2>3. What gets generated</H2>
       <H3>App icon</H3>
@@ -123,15 +135,16 @@ export function Branding() {
       <Table
         head={['Platform', 'How it is shown']}
         rows={[
-          ['Android', 'The image is the app window\'s background (`drawable/splash_screen.xml` on `AppTheme`) – visible from the first frame until React Native has drawn. **Android 12+** always shows a system start screen first; it is set to your splash colour without an icon (`values-v31/styles.xml`), so it blends straight into the image.'],
-          ['iOS', '`LaunchScreen.storyboard` with a full-screen image view (aspect fill) + `SplashImage` / `SplashBackground` in `Images.xcassets`'],
-          ['JS', 'The `SplashScreen` (shown while the session is restored) displays the **same image** the same way, plus a small loader – the switch from native to React Native is invisible'],
+          ['Android', 'The image is the app window\'s background (`drawable/splash_screen.xml` on `AppTheme`). **Android 12+** always shows a system start screen first; it is set to your splash colour without an icon (`values-v31/styles.xml`), so it blends straight into the image. The JS `SplashScreen` (and its route) is **transparent** on Android – the native splash stays on screen the whole time and is never drawn a second time.'],
+          ['iOS', '`LaunchScreen.storyboard` with a full-screen image view (aspect fill) or a centred logo + `SplashImage` / `SplashBackground` in `Images.xcassets`. iOS removes the launch screen as soon as the app draws, so the JS `SplashScreen` draws the **same image** the same way – the switch is invisible.'],
+          ['JS', 'Image, background colour and logo size live in `assets/images/splash.ts`. The splash stays up **5 seconds** (`appConfig.splashDelayMs`) while the session is restored, then opens Login or Home.'],
         ]}
       />
       <Code
         lang="text"
         title="timeline"
-        code={`tap icon ─► [Android 12+: splash colour] ─► native full-screen image ─► JS SplashScreen (same image + loader) ─► Login / Home`}
+        code={`Android: tap icon ─► [12+: splash colour] ─► native splash (stays visible under the transparent JS splash, 5 s) ─► Login / Home
+iOS:     tap icon ─► launch screen ─► JS SplashScreen (same image, 5 s) ─► Login / Home`}
       />
 
       <H2>4. Test it</H2>
@@ -144,10 +157,23 @@ export function Branding() {
         ]}
       />
 
-      <H2>Change them later</H2>
-      <P>
-        {'Every generated app documents its icon and splash files in its README (*App icon & splash screen*). The quickest way: generate a scratch project with the new images (`--app-icon` / `--splash-image`, plus `--no-install --no-pods`) and copy `android/app/src/main/res/mipmap-*`, `res/drawable*`, the `values*/` splash files, `ios/<App>/Images.xcassets`, `LaunchScreen.storyboard` and `splash.png` over.'}
-      </P>
+      <H2 id="change-them-later">Change them later</H2>
+      <P>Run the generator on the existing project – same `--name`, and `--directory` of its parent folder. When the folder is already a React Native app, only the branding is replaced; your code is not touched.</P>
+      <Code
+        code={`npx rn-architecture-generator --type frontend --yes --name MyApp \\
+  --app-icon ./brand/new-icon.png \\
+  --splash-image ./brand/new-splash.png --splash-background "#0B1020"`}
+      />
+      <P>In the wizard, pointing it at an existing app asks *Update the app icon / splash screen only* or *Delete it and create a new project*. Pass only `--app-icon` or only `--splash-image` to change just one of them.</P>
+      <Table
+        head={['Updated', 'Files']}
+        rows={[
+          ['App icon', '`android/app/src/main/res/mipmap-*`, `ios/<App>/Images.xcassets/AppIcon.appiconset` (every size is replaced)'],
+          ['Native splash', '`res/drawable/splash_screen.xml`, `drawable-nodpi/splash_image.png`, `values/splash_colors.xml`, `values-v31/styles.xml`, `ios/<App>/LaunchScreen.storyboard`, `SplashImage` / `SplashBackground`'],
+          ['JS splash', '`assets/images/splash.ts` + `splash.png`. Apps made with an older version also get the current `SplashScreen.tsx` (with their own import paths), the transparent Splash route and – if still the old default – `splashDelayMs` 1200 → 5000'],
+        ]}
+      />
+      <Callout type="warning">Native files changed – rebuild the app (`npx react-native run-android` / `run-ios`). On iOS delete the app first: launch screens are cached.</Callout>
     </>
   );
 }

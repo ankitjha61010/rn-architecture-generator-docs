@@ -108,9 +108,9 @@ npx rn-architecture-generator --dry-run`}
       <H2>Pick a version</H2>
       <P>{'`npx rn-architecture-generator` always runs the newest release. To use or pin a specific one, add `@<version>` – every release and what changed is in the [Changelog](changelog).'}</P>
       <Code
-        code={`npx rn-architecture-generator@1.0.1
-npm install -g rn-architecture-generator@1.0.1
-yarn global add rn-architecture-generator@1.0.1`}
+        code={`npx rn-architecture-generator@1.0.2
+npm install -g rn-architecture-generator@1.0.2
+yarn global add rn-architecture-generator@1.0.2`}
       />
 
       <H2>Requirements</H2>
@@ -214,11 +214,15 @@ npm run admin     # admin panel – http://localhost:5173`}
       <Table
         head={['Mode', 'Questions (in order)']}
         rows={[
-          ['**Frontend**', 'app name → package name (also the iOS bundle id) → location → app icon image → splash image (+ background colour) → architecture → state management → storage → API encryption → RTL → theme → vector icons → email auth → mobile OTP → Google / Facebook / Apple login → chat → group chat → audio calls → video calls → Socket.io → push notifications → Firebase files → analytics → terms → delete account → Google Location → drawer → OTA → in-app purchases → payment gateway → admin panel → install / pods / git'],
+          ['**Frontend**', 'app name → package name (also the iOS bundle id) → location → app icon image → splash image (+ background colour, full screen or logo size) → architecture → state management → storage → API encryption → RTL → theme → vector icons → email auth → mobile OTP → Google / Facebook / Apple login → chat → group chat → audio calls → video calls → Socket.io → push notifications → Firebase files → analytics → terms → delete account → Google Location → drawer → OTA → in-app purchases → payment gateway → admin panel → install / pods / git'],
           ['**Backend**', 'name → location → framework → architecture → authentication & sign-in methods → password hashing → database → ORM → modules → deployment → Redis → Docker → security → encryption → Swagger → Firebase service account & Agora keys → summary (*Yes* · *Go back and modify* · *Cancel*)'],
           ['**Frontend + Backend**', 'The app questions, then only the backend questions the app doesn\'t already answer'],
         ]}
       />
+      <Callout type="tip" title="Picked a wrong answer?">
+        {'Every question has **← Back** at the bottom of the list (in text questions type `<`). The previous question comes back with your answer pre-selected – everything before it is kept.'}
+      </Callout>
+      <P>Pointing the wizard at a folder that already holds a generated app offers *Update the app icon / splash screen only* – see [App Icon & Splash](branding). To rename an app later, see [Rename a Project](rename).</P>
       <Callout title="Rules applied automatically">
         Chat or calling turns on Socket.io and vector icons · group chat needs chat · the Redux architecture uses Redux Toolkit · microservices need authentication and always use Redis.
       </Callout>

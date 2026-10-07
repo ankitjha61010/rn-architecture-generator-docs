@@ -2,7 +2,7 @@ import type { ComponentType } from 'react';
 import { Architectures, Microservices, Monolith } from './architecture';
 import { Installation, Introduction, QuickStart } from './gettingStarted';
 import { Authentication, Configuration, Database, Docker, Notifications, Ota, Payments, Realtime, Swagger } from './guides';
-import { Changelog, CliReference, Contributing, Examples, Troubleshooting } from './reference';
+import { Changelog, CliReference, Commands, Contributing, Examples, RenameProject, Troubleshooting } from './reference';
 import { AdminPanel, Backend, Branding, ReactNativeApp } from './templates';
 
 /** Page body per slug – titles, descriptions and order live in lib/site.ts. */
@@ -27,6 +27,8 @@ export const content: Record<string, ComponentType> = {
   ota: Ota,
   configuration: Configuration,
   'cli-reference': CliReference,
+  commands: Commands,
+  rename: RenameProject,
   troubleshooting: Troubleshooting,
   changelog: Changelog,
   examples: Examples,

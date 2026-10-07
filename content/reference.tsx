@@ -1,11 +1,16 @@
 import { Callout, Code, H2, List, P, Table, md } from '@/components/Doc';
-import { latest, releases, versionAnchor } from '@/lib/versions';
+import { latest, releases, upcoming, versionAnchor } from '@/lib/versions';
 
 export function CliReference() {
   return (
     <>
       <P>Without flags the CLI runs the interactive wizard. Flags pre-answer questions; `--yes` uses defaults for everything not passed (then `--name` is required). Every on/off option also has a `--no-…` form, e.g. `--no-notifications`.</P>
-      <Code code="npx rn-architecture-generator --help" />
+      <Code
+        code={`npx rn-architecture-generator --help          # every flag
+npx rn-architecture-generator --list          # every command and what it does
+npx rn-architecture-generator rename --help   # rename options`}
+      />
+      <P>Commands at a glance: [All Commands](commands). Renaming a generated project: [Rename a Project](rename).</P>
 
       <H2>General</H2>
       <Table
@@ -18,11 +23,13 @@ export function CliReference() {
           ['`--app-icon <path>`', 'square PNG / JPG / WebP (1024×1024 recommended) → every Android & iOS app icon – [App Icon & Splash](branding)'],
           ['`--splash-image <path>`', 'full-screen portrait image (e.g. 1290×2796) → native splash on Android & iOS'],
           ['`--splash-background <hex>`', 'colour around the splash image + Android 12+ start screen (default: the image\'s dominant colour)'],
+          ['`--splash-logo-width <dp>` · `--splash-logo-height <dp>`', 'show the splash image as a centred logo of this size (one side → the other follows the image) – default: full screen'],
           ['`--rn-version <v>`', '`0.87.1` (default) · `0.87` · `0.86.3` · `0.86`'],
           ['`--dry-run`', 'show what would be generated, write nothing'],
           ['`-y, --yes`', 'non-interactive, defaults for everything not passed'],
           ['`-f, --force`', 'replace the target folder if it exists'],
           ['`--no-install` · `--no-pods` · `--no-git`', 'skip `npm install` · `pod install` (macOS) · git init'],
+          ['`--list`', 'every command and what it does'],
           ['`-v, --version`', 'print the version'],
         ]}
       />
@@ -73,7 +80,111 @@ export function CliReference() {
           ['`--agora-app-id` · `--agora-app-certificate`', 'Agora keys for call tokens'],
         ]}
       />
+      <H2>rename</H2>
+      <Table
+        head={['Argument / flag', 'Values / meaning']}
+        rows={[
+          ['`rename <new-name>`', 'the new app name (letters / digits, starts with a letter) – asked when left out'],
+          ['`-d, --directory <path>`', 'the project to rename, or a full-stack folder with `mobile/` (default `.`)'],
+          ['`--display-name <name>`', 'name under the app icon (default: the new name split into words – `HeApp` → *He App*)'],
+          ['`-p, --package <id>`', 'also change the Android package / iOS bundle id (default: keep it)'],
+          ['`--dry-run` · `-y, --yes`', 'show the plan only · no questions, no confirmation'],
+        ]}
+      />
       <Callout type="tip">Not sure? Run with `--dry-run` first – it prints the files, folders and dependencies without writing anything.</Callout>
+    </>
+  );
+}
+
+export function Commands() {
+  return (
+    <>
+      <P>Everything the CLI can do, grouped by job. The same list is in your terminal with `npx rn-architecture-generator --list`; every flag is in the [CLI Reference](cli-reference).</P>
+      <Code code="npx rn-architecture-generator --list" />
+
+      <H2>Create a project</H2>
+      <Table
+        head={['Command', 'What it does']}
+        rows={[
+          ['`npx rn-architecture-generator`', 'Interactive wizard – frontend, backend or both. Every question has **← Back** (type `<` in text questions) to change the previous answer'],
+          ['`… --type frontend --name MyApp --yes`', 'React Native app without questions – defaults for everything not passed'],
+          ['`… --type backend --name my-api --yes`', 'NestJS / Express API without questions'],
+          ['`… --type fullstack --name MyApp --yes`', 'App + backend (+ admin panel) in one folder, already connected'],
+          ['`… --dry-run`', 'Show what would be generated – files, dependencies – and write nothing'],
+        ]}
+      />
+
+      <H2>Change an existing project</H2>
+      <Table
+        head={['Command', 'What it does']}
+        rows={[
+          ['`… --type frontend --yes --name MyApp --app-icon ./icon.png`', 'Replace the app icon of `./MyApp` (Android + iOS) – nothing else is touched. [App Icon & Splash](branding)'],
+          ['`… --type frontend --yes --name MyApp --splash-image ./splash.png --splash-background "#0B1020"`', 'Replace the native splash screen; add `--splash-logo-width 200` for a centred logo'],
+          ['`… rename HeApp --directory ./MyApp`', 'Rename the project: folder, Android, iOS, code and texts – package id kept. [Rename a Project](rename)'],
+          ['`… rename HeApp --package com.example.heapp`', 'Rename and also change the Android package / iOS bundle id'],
+        ]}
+      />
+
+      <H2>Help</H2>
+      <Table
+        head={['Command', 'What it does']}
+        rows={[
+          ['`… --list`', 'Every command and what it does'],
+          ['`… --help` · `… rename --help`', 'Every option of the generator · of `rename`'],
+          ['`… --version`', 'The installed version'],
+        ]}
+      />
+      <P>`…` stands for `npx rn-architecture-generator`.</P>
+    </>
+  );
+}
+
+export function RenameProject() {
+  return (
+    <>
+      <P>Created `myapp` and now it should be called `heapp`? One command renames the generated project everywhere – folder, Android, iOS, code and texts.</P>
+      <Code
+        code={`npx rn-architecture-generator rename heapp --directory ./myapp
+
+# or inside the project, with a display name and a new package / bundle id
+cd myapp
+npx rn-architecture-generator rename HeApp --display-name "He App" --package com.example.heapp`}
+      />
+      <P>Interactive, it shows the plan (old → new) and asks before changing anything; `--yes` skips the questions, `--dry-run` only shows the plan.</P>
+
+      <H2>What is renamed</H2>
+      <Table
+        head={['Where', 'What']}
+        rows={[
+          ['Project', 'the folder (`myapp/` → `heapp/`), `app.json` (name + display name), `package.json`, README'],
+          ['Android', '`strings.xml` app name, `MainActivity` component name, Kotlin / Java code; with `--package` also `namespace`, `applicationId`, `settings.gradle` and the source folders (`java/com/myapp` → `java/com/example/heapp`)'],
+          ['iOS', '`ios/myapp/` → `ios/heapp/`, `.xcodeproj`, `.xcworkspace`, the scheme, `Podfile` target, `AppDelegate` module name, `Info.plist` display name and permission texts; with `--package` the bundle id'],
+          ['App code', 'app name in `appConfig`, i18n `appName` (every language), other texts'],
+          ['Full-stack', '`mobile/`, `backend/` (package name, API title, logger…) and `admin/` together; a frontend-only project\'s `<name>-admin` folder too'],
+        ]}
+      />
+
+      <H2>What is kept on purpose</H2>
+      <Table
+        head={['Kept', 'Why']}
+        rows={[
+          ['Package / bundle id', 'The stores and Firebase know the app by it – only changed with `--package` (then it is a new app for them)'],
+          ['`.env` files', 'They hold database URLs and JWT issuers – renaming would disconnect data or sign everybody out. Files that still mention the old name are listed'],
+          ['Storage keys', 'Installed apps keep their signed-in session'],
+          ['Lock files, `Pods/`', '`npm install` / `pod install` update them; old build output (`ios/build`, `android/app/build`, `.cxx`) is deleted'],
+        ]}
+      />
+
+      <H2>After renaming</H2>
+      <Code
+        code={`cd heapp            # (full-stack: heapp/mobile)
+npm install
+cd ios && bundle exec pod install && cd ..
+npm start -- --reset-cache
+npx react-native run-android   # or run-ios`}
+      />
+      <Callout type="warning">With `--package`, add the new id to your Firebase project (and Apple Developer, Google / Facebook login) and replace `google-services.json` / `GoogleService-Info.plist` – the Android build fails until the Firebase file matches the package.</Callout>
+      <Callout type="tip">Launchers cache app names – uninstall the old build if the name under the icon doesn&apos;t change.</Callout>
     </>
   );
 }
@@ -86,7 +197,10 @@ export function Troubleshooting() {
         rows={[
           ['`Node … is not supported`', 'Install Node ≥ 22.13'],
           ['`npx` / network errors during init', 'Check your connection / proxy – the React Native CLI is downloaded on every run'],
-          ['`… already exists and is not empty`', 'Pick another `--name` / `--directory`, answer *Yes* to the overwrite question, or pass `--force`'],
+          ['`… already exists and is not empty`', 'Pick another `--name` / `--directory`, answer *Yes* to the overwrite question, or pass `--force`. To change only the icon / splash of that app, pass `--app-icon` / `--splash-image`'],
+          ['Picked a wrong answer in the wizard', 'Choose **← Back** (or type `<` in a text question) – the previous question comes back with your answer pre-selected'],
+          ['Android shows the logo again after the splash', 'Fixed in newer versions – update an existing app with `--splash-image` ([Change them later](branding)); its JS splash becomes transparent so only the native splash is seen'],
+          ['Old name still shows under the icon after `rename`', 'Uninstall the old build – launchers cache the name; run `pod install` and `npm start -- --reset-cache`'],
           ['`npm install` or `pod install` failed', 'The project is kept – run the command yourself in the project folder'],
           ['Docker: `port is already allocated`', 'Start with `npm run docker:up` – it moves to a free port and updates `.env` ([Docker & Ports](docker))'],
           ['App can\'t reach the backend', '`API_BASE_URL` must be reachable from the device (LAN IP, same Wi-Fi); add the admin URL to the backend `CORS_ORIGINS`'],
@@ -218,6 +332,20 @@ rn-architecture-generator --version        # check what you have`}
         head={['Version', 'Released', 'Summary']}
         rows={releases.map(release => [`[v${release.version}](/docs/changelog/#${versionAnchor(release.version)})`, release.date.replace(/-/g, '\u2011'), release.summary])}
       />
+      {upcoming.length ? (
+        <section className="release">
+          <h2 id="upcoming" className="doc-h2">
+            <a href="#upcoming">Upcoming</a>
+            <small className="release-date">not on npm yet</small>
+          </h2>
+          {upcoming.map(group => (
+            <div key={group.title}>
+              <h3 className="doc-h3">{group.title}</h3>
+              <List items={group.items} />
+            </div>
+          ))}
+        </section>
+      ) : null}
       {releases.map(release => (
         <section key={release.version} className="release">
           <h2 id={versionAnchor(release.version)} className="doc-h2">
@@ -234,7 +362,7 @@ rn-architecture-generator --version        # check what you have`}
           ))}
         </section>
       ))}
-      <Callout type="tip">Already generated a project with an older version? The generator creates new projects – existing ones don&apos;t change. Generate again (or compare with a fresh project) to pick up the fixes.</Callout>
+      <Callout type="tip">Already generated a project with an older version? Existing projects don&apos;t change by themselves – generate again (or compare with a fresh project) to pick up fixes. The app icon / splash can be updated in place: [Change them later](branding).</Callout>
     </>
   );
 }
