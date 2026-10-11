@@ -12,6 +12,21 @@ export interface Release {
 
 export const releases: Release[] = [
   {
+    version: '1.0.4',
+    date: '2026-10-11',
+    summary: 'Stable release – the same generator as 1.0.3, recommended for all new projects. Requires Node ≥ 22.13.0 (Node 22 LTS or Node 24 LTS recommended).',
+    groups: [
+      {
+        title: 'Release',
+        items: [
+          '**Stable:** 1.0.4 is the current stable version; `npx rn-architecture-generator` installs it.',
+          '**Node.js:** ≥ 22.13.0 is required (checked before generating). Recommended: **Node 22 LTS** (22.13 or newer) or **Node 24 LTS**. Node 20 and older are not supported.',
+          'README and the [Installation](installation) page show the stable version and the recommended Node versions.',
+        ],
+      },
+    ],
+  },
+  {
     version: '1.0.3',
     date: '2026-10-07',
     summary: 'Short `icon` / `splash` commands that change an existing app in place, a git check (commit first) before `icon` / `splash` / `rename`, and no more new projects created inside an existing app.',

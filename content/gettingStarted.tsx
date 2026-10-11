@@ -108,9 +108,9 @@ npx rn-architecture-generator --dry-run`}
       <H2>Pick a version</H2>
       <P>{'`npx rn-architecture-generator` always runs the newest release. To use or pin a specific one, add `@<version>` – every release and what changed is in the [Changelog](changelog).'}</P>
       <Code
-        code={`npx rn-architecture-generator@1.0.3
-npm install -g rn-architecture-generator@1.0.3
-yarn global add rn-architecture-generator@1.0.3`}
+        code={`npx rn-architecture-generator@1.0.4
+npm install -g rn-architecture-generator@1.0.4
+yarn global add rn-architecture-generator@1.0.4`}
       />
 
       <H2>Requirements</H2>
@@ -118,7 +118,7 @@ yarn global add rn-architecture-generator@1.0.3`}
       <Table
         head={['Requirement', 'Details']}
         rows={[
-          ['**Node.js**', '**≥ 22.13.0** – checked before generating'],
+          ['**Node.js**', '**≥ 22.13.0** – checked before generating. Recommended: **Node 22 LTS** (22.13 or newer) or **Node 24 LTS**. Node 20 and older are not supported.'],
           ['**npm / npx**', 'Must be on your `PATH`'],
           ['**OS**', 'macOS, Linux or Windows. iOS builds need macOS.'],
           ['**Internet**', 'The React Native CLI (`@react-native-community/cli@20.2.0`) and all packages are downloaded'],
